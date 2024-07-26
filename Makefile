@@ -25,6 +25,7 @@ endif
 include target/sim/questasim/Makefile
 include target/lint/spyglass/Makefile
 include target/fpga/Makefile
+include target/gf22fdx/synopsys/Makefile
 include $(PULPISSIMO_ROOT)/utils/utils.mk
 
 .PHONY: checkout

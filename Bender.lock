@@ -41,8 +41,8 @@ packages:
     - apb
     - common_cells
   axi:
-    revision: 9402c8a9ce0a7b5253c3c29e788612d771e8b5d6
-    version: 0.39.3
+    revision: 587355b77b8ce94dcd600efbd5d5bd118ff913a7
+    version: 0.39.4
     source:
       Git: https://github.com/pulp-platform/axi.git
     dependencies:
@@ -57,8 +57,8 @@ packages:
     dependencies:
     - common_cells
   common_cells:
-    revision: 0d67563b6b592549542544f1abc0f43e5d4ee8b4
-    version: 1.35.0
+    revision: c27bce39ebb2e6bae52f60960814a2afca7bd4cb
+    version: 1.37.0
     source:
       Git: https://github.com/pulp-platform/common_cells.git
     dependencies:
@@ -80,28 +80,28 @@ packages:
     - fpnew
     - tech_cells_generic
   cv32e40x:
-    revision: fe5e7f41ad284b5aee583a727503bb6f1097daab
+    revision: null
     version: null
     source:
-      Git: https://github.com/pulp-platform/cv32e40x.git
+      Path: working_dir/cv32e40x
     dependencies: []
-  fir-hwpe:
-    revision: b59edc4daf6fc44b4c0b3bb8a494351299c0423a
-    version: 2.0.0
+  decimate-xifu:
+    revision: null
+    version: null
     source:
-      Git: https://github.com/pulp-platform/fir-hwpe.git
+      Path: working_dir/decimate-xifu
+    dependencies:
+    - cv32e40x
+  fir-hwpe:
+    revision: null
+    version: null
+    source:
+      Path: working_dir/fir-hwpe
     dependencies:
     - hci
     - hwpe-ctrl
     - hwpe-stream
     - zeroriscy
-  fir-xifu:
-    revision: 2b1a71fa7310c20ae0824b93669766713ebcec88
-    version: 0.1.3
-    source:
-      Git: https://github.com/pulp-platform/fir-xifu.git
-    dependencies:
-    - cv32e40x
   fpnew:
     revision: a8e0cba6dd50f357ece73c2c955d96efc3c6c315
     version: null
@@ -196,10 +196,10 @@ packages:
     - udma_sdio
     - udma_uart
   pulp_soc:
-    revision: c339e2ea69ad6d22daefe19a9140c48f72a5d46b
+    revision: null
     version: null
     source:
-      Git: https://github.com/pulp-platform/pulp_soc.git
+      Path: working_dir/pulp_soc
     dependencies:
     - adv_dbg_if
     - apb
@@ -211,8 +211,8 @@ packages:
     - common_cells
     - cv32e40p
     - cv32e40x
+    - decimate-xifu
     - fir-hwpe
-    - fir-xifu
     - fpnew
     - ibex
     - jtag_pulp
@@ -222,6 +222,12 @@ packages:
     - scm
     - tech_cells_generic
     - timer_unit
+  pulpissimo_essentials:
+    revision: null
+    version: null
+    source:
+      Path: working_dir/pulpissimo_essentials
+    dependencies: []
   pulpissimo_optional_vips:
     revision: null
     version: null
@@ -281,6 +287,12 @@ packages:
       Git: https://github.com/pulp-platform/tech_cells_generic.git
     dependencies:
     - common_verification
+  tech_cells_gf22fdx:
+    revision: a1e4e0485afeefb905d8120b27503bf691c45725
+    version: null
+    source:
+      Git: git@iis-git.ee.ethz.ch:pulp-restricted/tech_cells_GF22FDX.git
+    dependencies: []
   timer_unit:
     revision: 4c69615c89db9397a9747d6f6d6a36727854f0bc
     version: 1.0.3
