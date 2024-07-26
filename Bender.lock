@@ -80,28 +80,28 @@ packages:
     - fpnew
     - tech_cells_generic
   cv32e40x:
-    revision: null
+    revision: fe5e7f41ad284b5aee583a727503bb6f1097daab
     version: null
     source:
-      Path: working_dir/cv32e40x
+      Git: https://github.com/pulp-platform/cv32e40x.git
     dependencies: []
-  decimate-xifu:
-    revision: null
-    version: null
-    source:
-      Path: working_dir/decimate-xifu
-    dependencies:
-    - cv32e40x
   fir-hwpe:
-    revision: null
-    version: null
+    revision: 0397301c727e2f232e0f508fbdc13401c023fa26
+    version: 2.0.2
     source:
-      Path: working_dir/fir-hwpe
+      Git: https://github.com/pulp-platform/fir-hwpe.git
     dependencies:
     - hci
     - hwpe-ctrl
     - hwpe-stream
     - zeroriscy
+  fir-xifu:
+    revision: 2b1a71fa7310c20ae0824b93669766713ebcec88
+    version: 0.1.3
+    source:
+      Git: https://github.com/pulp-platform/fir-xifu.git
+    dependencies:
+    - cv32e40x
   fpnew:
     revision: a8e0cba6dd50f357ece73c2c955d96efc3c6c315
     version: null
@@ -196,10 +196,10 @@ packages:
     - udma_sdio
     - udma_uart
   pulp_soc:
-    revision: null
+    revision: 8c6b9dea6ba8dbdbc995efb6e0e24194d470f373
     version: null
     source:
-      Path: working_dir/pulp_soc
+      Git: https://github.com/pulp-platform/pulp_soc.git
     dependencies:
     - adv_dbg_if
     - apb
@@ -211,8 +211,8 @@ packages:
     - common_cells
     - cv32e40p
     - cv32e40x
-    - decimate-xifu
     - fir-hwpe
+    - fir-xifu
     - fpnew
     - ibex
     - jtag_pulp
@@ -226,7 +226,7 @@ packages:
     revision: null
     version: null
     source:
-      Path: working_dir/pulpissimo_essentials
+      Path: target/synthesis/bender/pulpissimo_essentials
     dependencies: []
   pulpissimo_optional_vips:
     revision: null
@@ -288,10 +288,10 @@ packages:
     dependencies:
     - common_verification
   tech_cells_gf22fdx:
-    revision: a1e4e0485afeefb905d8120b27503bf691c45725
+    revision: null
     version: null
     source:
-      Git: git@iis-git.ee.ethz.ch:pulp-restricted/tech_cells_GF22FDX.git
+      Path: target/synthesis/bender/tech_cells
     dependencies: []
   timer_unit:
     revision: 4c69615c89db9397a9747d6f6d6a36727854f0bc

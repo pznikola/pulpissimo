@@ -25,13 +25,20 @@ endif
 include target/sim/questasim/Makefile
 include target/lint/spyglass/Makefile
 include target/fpga/Makefile
-include target/gf22fdx/synopsys/Makefile
 include $(PULPISSIMO_ROOT)/utils/utils.mk
+
+# ignore synthesis targets if only free setup available
+-include target/synthesis/Makefile
 
 .PHONY: checkout
 ## Checkout all Bender IPs
 checkout: $(PULPISSIMO_UTILS)/bender
 	$(PULPISSIMO_UTILS)/bender checkout
+
+.PHONY: checkout-synthesis
+checkout-synthesis:
+	git clone --recursive git@iis-git.ee.ethz.ch:pulp-restricted/pulpissimo-synthesis target/synthesis
+	$(PULPISSIMO_UTILS)/bender update
 
 .PHONY: hw bootrom padframe
 ## Re-generate generated hardware IPs
