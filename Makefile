@@ -36,7 +36,7 @@ checkout: $(PULPISSIMO_UTILS)/bender
 	$(PULPISSIMO_UTILS)/bender checkout
 
 .PHONY: checkout-synthesis
-checkout-synthesis:
+checkout-synthesis: $(PULPISSIMO_UTILS)/bender
 	git clone --recursive git@iis-git.ee.ethz.ch:pulp-restricted/pulpissimo-synthesis target/synthesis
 	$(PULPISSIMO_UTILS)/bender update
 
