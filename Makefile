@@ -14,6 +14,7 @@
 #
 # Author: Manuel Eggimann
 
+BENDER ?= $(PULPISSIMO_UTILS)/bender
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 PULPISSIMO_ROOT=$(abspath $(current_dir)/..)
@@ -23,6 +24,7 @@ ifneq (,$(wildcard /etc/iis.version))
 endif
 
 include target/sim/questasim/Makefile
+include target/sim/verilator/Makefile
 include target/lint/spyglass/Makefile
 include target/fpga/Makefile
 include $(PULPISSIMO_ROOT)/utils/utils.mk
@@ -33,12 +35,12 @@ include $(PULPISSIMO_ROOT)/utils/utils.mk
 .PHONY: checkout
 ## Checkout all Bender IPs
 checkout: $(PULPISSIMO_UTILS)/bender
-	$(PULPISSIMO_UTILS)/bender checkout
+	$(BENDER) checkout
 
 .PHONY: checkout-synthesis
 checkout-synthesis: $(PULPISSIMO_UTILS)/bender
 	git clone --recursive git@iis-git.ee.ethz.ch:pulp-restricted/pulpissimo-synthesis target/synthesis
-	$(PULPISSIMO_UTILS)/bender update
+	$(BENDER) update
 
 .PHONY: hw bootrom padframe
 ## Re-generate generated hardware IPs

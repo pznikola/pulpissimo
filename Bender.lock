@@ -118,10 +118,10 @@ packages:
     dependencies:
     - common_cells
   generic_fll:
-    revision: 1c92dc73a940392182fd4cb7b86f35649b349595
-    version: 0.2.0
+    revision: null
+    version: null
     source:
-      Git: https://github.com/pulp-platform/generic_FLL.git
+      Path: working_dir/generic_fll
     dependencies: []
   gpio:
     revision: null
@@ -196,10 +196,10 @@ packages:
     - udma_sdio
     - udma_uart
   pulp_soc:
-    revision: 8c6b9dea6ba8dbdbc995efb6e0e24194d470f373
+    revision: null
     version: null
     source:
-      Git: https://github.com/pulp-platform/pulp_soc.git
+      Path: working_dir/pulp_soc
     dependencies:
     - adv_dbg_if
     - apb

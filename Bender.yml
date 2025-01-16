@@ -69,7 +69,25 @@ sources:
       - hw/padframe/padframe_adapter.sv
       - hw/clock_gen_fpga.sv
 
-  - target: simulation
+  # For Verilator RTL simulation 
+  - target: verilator
+    files:
+      - hw/padframe/padframe_adapter.sv
+      - hw/clock_gen_verilator.sv
+      - target/sim/tb/tb_lib/riscv_pkg.sv
+      - target/sim/tb/tb_lib/jtag_pkg.sv
+      - target/sim/tb/tb_lib/pulp_tap_pkg.sv
+      - target/sim/tb/tb_lib/tb_clk_gen.sv
+      - target/sim/tb/tb_lib/SimJTAG.sv
+      - target/sim/tb/tb_pulp.sv
+
+  # For Verilator RTL simulation 
+  - target: verilator_dpi
+    files:
+      - target/sim/tb/tb_lib/remote_bitbang/sim_jtag.c
+      - target/sim/tb/tb_lib/remote_bitbang/remote_bitbang.c
+
+  - target: all(simulation, not(verilator))
     files:
       - target/sim/tb/tb_lib/riscv_pkg.sv
       - target/sim/tb/tb_lib/jtag_pkg.sv
