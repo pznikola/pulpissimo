@@ -18,14 +18,16 @@
 module tb_pulp;
   timeunit 1ns;
   timeprecision 100ps;
-  // import srec_pkg::*;
+`ifndef VERILATOR
+  import srec_pkg::*;
+`endif
 
   parameter CONFIG_FILE = "NONE";
 
   // simulation platform parameters
 
   // Choose your core: 0 for RISCY, 1 for IBEX RV32IMC (formerly ZERORISCY), 2 for IBEX RV32EC (formerly MICRORISCY), 3 for CV32E40X
-  parameter CORE_TYPE = 3;
+  parameter CORE_TYPE = 0;
 
   // if RI5CY is instantiated (CORE_TYPE == 0), USE_FPU enables the FPU
   parameter USE_FPU = 1;
@@ -523,6 +525,12 @@ module tb_pulp;
     .clk_o(s_clk_ref)
   );
 
+  // 
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars();
+  end
+
   initial begin : timing_format
     $timeformat(-9, 0, "ns", 9);
   end : timing_format
@@ -540,7 +548,9 @@ module tb_pulp;
     int          entry_point;
     logic [31:0] begin_l2_instr;
     automatic logic [9:0] FC_CORE_ID;
-    // automatic srec_record_t records[$];
+`ifndef VERILATOR
+    automatic srec_record_t records[$];
+`endif /* VERILATOR */
     automatic string jtag_tap_type;
 
     FC_CORE_ID    = {5'd31, 5'd0};
@@ -622,12 +632,16 @@ module tb_pulp;
         if ($value$plusargs("stimuli=%s", stimuli_path)) begin
           $display("[TB  ] %t - Loading custom stimuli from %s", $realtime, stimuli_path);
           load_stim(stimuli_path, stimuli);
-        // end else if ($value$plusargs("srec=%s", srec_path)) begin
-        //   $display("[TB  ] %t - Loading srec from %s", $realtime, srec_path);
-        //   srec_read(srec_path, records);
-        //   srec_records_to_stimuli(records, stimuli, entry_point);
-        //   if (!$test$plusargs("srec_ignore_entry"))
-        //     begin_l2_instr = entry_point;
+        end else if ($value$plusargs("srec=%s", srec_path)) begin
+`ifndef VERILATOR
+          $display("[TB  ] %t - Loading srec from %s", $realtime, srec_path);
+          srec_read(srec_path, records);
+          srec_records_to_stimuli(records, stimuli, entry_point);
+          if (!$test$plusargs("srec_ignore_entry"))
+            begin_l2_instr = entry_point;
+`else
+          $fatal(1, "Loading from srec currently not supported in Verilator.");
+`endif /* VERILATOR */
         end else begin
           $display("[TB  ] %t - Loading default stimuli", $realtime);
           load_stim("./vectors/stim.txt", stimuli);
@@ -678,6 +692,7 @@ module tb_pulp;
         $display("[TB  ] %t - Write32 PULP TAP", $realtime);
 
         #50us;
+        $display("[TB  ] %t - R/W test of L2", $realtime);
         pulp_tap.read32(begin_l2_instr, 1, jtag_data, s_tck, s_tms, s_trstn, s_tdi, s_tdo);
 
         if (jtag_data[0] != 32'hABBAABBA)
@@ -740,7 +755,7 @@ module tb_pulp;
             "[TB  ] - Preloading the memory via direct simulator access. \nNEVER EVER USE THIS MODE TO VERIFY THE BOOT BEHAVIOR OF A CHIP. THIS BOOTMODE IS IMPOSSIBLE ON A PHYSICAL CHIP!!!");
           preload_l2(num_stim, stimuli);
 `else
-          $fatal(1, "fast_debug_preload currently not supported in Verilator.");
+          $fatal(1, "bootmode=fast_debug_preload currently not supported in Verilator.");
 `endif /* VERILATOR */
         end else begin
           $error("Unknown L2 loading mechnism chosen (bootmode == %s)", bootmode);
