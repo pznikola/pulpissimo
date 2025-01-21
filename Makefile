@@ -13,8 +13,12 @@
 # limitations under the License.
 #
 # Author: Manuel Eggimann
-
-BENDER ?= $(PULPISSIMO_UTILS)/bender
+# Check if bender is in PATH; if yes, use it; if not, use $(PULPISSIMO_UTILS)/bender
+ifeq (, $(shell which bender 2>/dev/null))
+	BENDER ?= $(PULPISSIMO_UTILS)/bender
+else
+	BENDER ?= bender
+endif
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 PULPISSIMO_ROOT=$(abspath $(current_dir)/..)

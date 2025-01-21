@@ -101,7 +101,7 @@ module tb_pulp;
   localparam IO_PAD_CAM_VSYNC = 19;
   // I2C
   localparam IO_PAD_I2C0_SDA = 20;
-  localparam IO_PAD_12C0_SCL = 21;
+  localparam IO_PAD_I2C0_SCL = 21;
   // GPIO
   localparam IO_PAD_SDIO_DATA0 = 22;
   // I2S
@@ -286,13 +286,19 @@ module tb_pulp;
   endgenerate
 `endif
 
+`ifndef VERILATOR
+  wire w_pad_i2c0_sda;
+  wire w_pad_i2c0_scl;
 
+  alias w_pad_i2c0_scl = w_pad_io[IO_PAD_I2C0_SCL];
+  alias w_pad_i2c0_sda = w_pad_io[IO_PAD_I2C0_SDA];
 
+  pullup sda0_pullup_i (w_pad_i2c0_scl);
+  pullup scl0_pullup_i (w_pad_i2c0_sda);
+`else
   pullup sda0_pullup_i (w_pad_io[IO_PAD_I2C0_SDA]);
   pullup scl0_pullup_i (w_pad_io[IO_PAD_I2C0_SCL]);
-
-  pullup sda1_pullup_i (w_pad_io[IO_PAD_I2C1_SDA]);
-  pullup scl1_pullup_i (w_pad_io[IO_PAD_I2C1_SCL]);
+`endif
 
   always_comb begin
     sim_jtag_enable = 1'b0;

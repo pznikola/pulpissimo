@@ -54,6 +54,7 @@ $(VERILATOR_BUILD_DIR)/pulpissimo.f: Bender.lock Bender.yml $(VERILATOR_BUILD_DI
 	$(BENDER) script verilator -t tech_cells_generic_include_deprecated -t rtl -t verilator -t rtl_sim -t verilator_dpi -DSYNTHESIS -DVERILATOR > $@
 	echo $(VERILATOR_DPI) >> $@
 
+.PHONY: clean-verilator-bender
 clean-verilator-bender:
 	rm -rf $(VERILATOR_BUILD_DIR)/pulpissimo.f
 
@@ -65,12 +66,9 @@ $(VERILATOR_BUILD_DIR)/obj_dir/Vtb_pulp: $(VERILATOR_BUILD_DIR)/pulpissimo.f
 	cd $(VERILATOR_BUILD_DIR); $(VERILATOR) $(VERILATOR_ARGS) -CFLAGS "-O2" --top tb_pulp -f  $(VERILATOR_BUILD_DIR)/pulpissimo.f
 
 .PHONY: verilate
-verilate: $(VERILATOR_BUILD_DIR)/obj_dir/Vtb_pulp
+verilate: clean-verilator-bender verilator-bender $(VERILATOR_BUILD_DIR)/obj_dir/Vtb_pulp
 
 clean-verilate:
 	rm -rf $(VERILATOR_BUILD_DIR)/obj_dir
-
-verilator: verilator/obj_dir/Vtb_croc_soc
-	cd verilator; obj_dir/Vtb_croc_soc +binary="$(realpath $(SW_HEX))"
 
 .PHONY: verilator
