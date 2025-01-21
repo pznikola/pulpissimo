@@ -797,7 +797,11 @@ module tb_pulp;
       else exit_status = EXIT_FAIL;
       $display("[TB  ] %t - Received status core: 0x%h", $realtime, jtag_data[0][30:0]);
 
+`ifdef VERILATOR
+      $finish;
+`else
       $stop;
+`endif
 
     end
   end
