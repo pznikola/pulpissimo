@@ -412,7 +412,7 @@ module tb_pulp;
       .cam_pclk_o (w_pad_io[IO_PAD_CAM_PCLK]),
       .cam_vsync_o(w_pad_io[IO_PAD_CAM_VSYNC]),
       .cam_href_o (w_pad_io[IO_PAD_CAM_HSYNC]),
-      .cam_data_o (w_pad_io[IO_PAD_CAM_DATA])
+      .cam_data_o (w_pad_io[IO_PAD_CAM_DATA7:IO_PAD_CAM_DATA0])
     );
   end
 
