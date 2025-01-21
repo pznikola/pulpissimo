@@ -756,13 +756,13 @@ module tb_pulp;
             $fatal(1, "Unknown tap type +jtag_load_tap=%s", jtag_tap_type);
           end
         end else if (bootmode == "fast_debug_preload") begin
-`ifndef VERILATOR
+// `ifndef VERILATOR
           $warning(
             "[TB  ] - Preloading the memory via direct simulator access. \nNEVER EVER USE THIS MODE TO VERIFY THE BOOT BEHAVIOR OF A CHIP. THIS BOOTMODE IS IMPOSSIBLE ON A PHYSICAL CHIP!!!");
           preload_l2(num_stim, stimuli);
-`else
-          $fatal(1, "bootmode=fast_debug_preload currently not supported in Verilator.");
-`endif /* VERILATOR */
+// `else
+//           $fatal(1, "bootmode=fast_debug_preload currently not supported in Verilator.");
+// `endif /* VERILATOR */
         end else begin
           $error("Unknown L2 loading mechnism chosen (bootmode == %s)", bootmode);
         end
@@ -828,7 +828,7 @@ module tb_pulp;
     $fclose(stim_fd);
   endtask  // load_stim
 
-`ifndef VERILATOR
+// `ifndef VERILATOR
   task automatic preload_l2(input int num_stim, ref logic [95:0] stimuli[$]);
     logic more_stim;
     static logic [95:0] stim_entry;
@@ -837,19 +837,19 @@ module tb_pulp;
     while (more_stim == 1'b1) begin
       @(posedge i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.clk_i);
       stim_entry = stimuli[num_stim];
-      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.req = 1'b1;
-      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.add = stim_entry[95:64];
-      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.wdata = stim_entry[31:0];
-      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.wen = 1'b0;
-      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.be = '1;
+      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].req = 1'b1;
+      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].add = stim_entry[95:64];
+      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].wdata = stim_entry[31:0];
+      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].wen = 1'b0;
+      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].be = '1;
       do begin
         @(posedge i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.clk_i);
-      end while (~i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.gnt);
-      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.add   = stim_entry[95:64]+4;
-      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.wdata = stim_entry[63:32];
+      end while (~i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].gnt);
+      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].add   = stim_entry[95:64]+4;
+      force i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].wdata = stim_entry[63:32];
       do begin
         @(posedge i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.clk_i);
-      end while (~i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.gnt);
+      end while (~i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].gnt);
 
       num_stim = num_stim + 1;
       if (num_stim > $size(stimuli) || stimuli[num_stim] === 96'bx) begin  // make sure we have more stimuli
@@ -857,13 +857,13 @@ module tb_pulp;
         break;
       end
     end  // while (more_stim == 1'b1)
-    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.req;
-    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.add;
-    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.wdata;
-    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.wen;
-    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.tcdm_debug.be;
+    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].req;
+    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].add;
+    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].wdata;
+    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].wen;
+    release i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.master_ports[4].be;
     @(posedge i_dut.i_soc_domain.i_pulp_soc.i_soc_interconnect_wrap.clk_i);
   endtask
-`endif /* VERILATOR */
+// `endif /* VERILATOR */
 
 endmodule  // tb_pulp
