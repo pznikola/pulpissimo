@@ -32,6 +32,9 @@ module tb_pulp;
   // if RI5CY is instantiated (CORE_TYPE == 0), USE_FPU enables the FPU
   parameter USE_FPU = 1;
 
+  // enable the FIR HWPE
+  parameter USE_HWPE = 1;
+
   // if RI5CY uses ZFINX (merged float and integer register files)
   parameter USE_ZFINX = 0;
 
@@ -503,7 +506,7 @@ module tb_pulp;
     .CORE_TYPE ( CORE_TYPE ),
     .USE_FPU   ( USE_FPU   ),
     .USE_ZFINX ( USE_ZFINX ),
-    .USE_HWPE  ( 1'b0      ), //TODO Re-expose once debugged why it is not working
+    .USE_HWPE  ( USE_HWPE  ),
     .SIM_STDOUT(SIM_STDOUT)
   ) i_dut (
     .pad_ref_clk       ( w_clk_ref           ),
@@ -531,11 +534,12 @@ module tb_pulp;
     .clk_o(s_clk_ref)
   );
 
-  // 
+`ifdef VERILATOR
   initial begin
     $dumpfile("dump.vcd");
     $dumpvars();
   end
+`endif /* VERILATOR */
 
   initial begin : timing_format
     $timeformat(-9, 0, "ns", 9);
