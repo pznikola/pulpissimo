@@ -208,7 +208,9 @@ module tb_pulp;
   logic tmp_tdo;
   logic tmp_bridge_tdo;
 
-
+  wire w_i2s_sck;
+  wire w_i2s_ws;
+  wire [7:0] w_i2s_data;
 
   wire w_master_i2s_sck;
   wire w_master_i2s_ws;
