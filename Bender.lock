@@ -1,6 +1,6 @@
 packages:
   adv_dbg_if:
-    revision: fb6149d62954404ffaaedca92864ebaf699571bf
+    revision: 040cdc9131e2dcda9d6053cb302d115ac8020b72
     version: null
     source:
       Git: https://github.com/pulp-platform/adv_dbg_if.git
@@ -196,7 +196,7 @@ packages:
     - udma_sdio
     - udma_uart
   pulp_soc:
-    revision: 2d1b824b58e37124c690398cb575fab6ed4ed932
+    revision: c783d4724acf0585ba5534e6b24257a52a4800ef
     version: null
     source:
       Git: https://github.com/pulp-platform/pulp_soc.git
