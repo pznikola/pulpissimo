@@ -52,8 +52,8 @@ sources:
   - target: not(any(fpga, xilinx))
     files:
       - hw/asic_autogen_rom.sv
-      - hw/soc_domain.sv
-      - hw/pulpissimo.sv
+  - hw/soc_domain.sv
+  - hw/pulpissimo.sv
 
 
   # rtl_sim - Generic version of pulpissimo used for non-verilator RTL simulation 
