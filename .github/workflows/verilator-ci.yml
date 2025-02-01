@@ -8,12 +8,36 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   verilator-ci:
     name: Public Verilator CI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     container:
       image: fconti/pulp-verilator:latest
+      volumes: 
+        - ${{ github.workspace }}:/workspaces
     steps:
-      - name: Test
-        # Skip on forks or pull requests from forks due to missing secrets.
-        if:
-          github.repository == 'pulp-platform/pulpissimo' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-        run: echo "HELLO"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Check container environment
+        run: |
+          echo "Running on:"
+          cat /etc/os-release
+      - name: Where am I?
+        shell: bash
+        run: |
+          cd /workspaces
+          echo `ls -l`
+      - name: Verilate
+        shell: bash
+        run: |
+          cd /workspaces
+          make checkout
+          make verilate
+      - name: SW sanity check
+        shell: bash
+        env:
+          VERILATOR_PATH: /workspaces/build/verilator
+        run: |
+          cd /workspaces
+          git submodule update --init --recursive
+          source sw/pulp-runtime/configs/pulpissimo.sh
+          cd sw/regression_tests/hello
+          make clean all run platform=verilator bootmode=fast_debug
