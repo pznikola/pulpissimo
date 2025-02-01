@@ -67,6 +67,12 @@ $(VERILATOR_BUILD_DIR)/obj_dir/Vtb_pulp: $(VERILATOR_BUILD_DIR)/pulpissimo.f
 
 .PHONY: verilate
 verilate: clean-verilator-bender verilator-bender $(VERILATOR_BUILD_DIR)/obj_dir/Vtb_pulp
+ifneq ($(VERILATOR_PATH), $(PULPISSIMO_ROOT)/build/verilator)
+	@echo ""
+	@echo "To run a simulation directly with the PULP runtime or SDK \`make run\` commands execute the following:"
+	@echo ""
+	@echo "	export VERILATOR_PATH=$(PULPISSIMO_ROOT)/build/verilator"
+endif
 
 clean-verilate:
 	rm -rf $(VERILATOR_BUILD_DIR)/obj_dir
