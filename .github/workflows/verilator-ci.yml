@@ -8,7 +8,9 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   verilator-ci:
     name: Public Verilator CI
-    runs-on: fconti/pulp-verilator
+    runs-on: ubuntu-latest
+    container:
+      image: fconti/pulp-verilator:latest
     steps:
       - name: Test
         # Skip on forks or pull requests from forks due to missing secrets.
