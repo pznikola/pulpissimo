@@ -32,6 +32,12 @@ make
 This will use the multilib support to build the libraries for the various cores (riscy, zeroriscy and so on). The right libraries will be selected depending on which compiler options you use.
 
 ### Install build process for the PULP runtime
+Clone the pulpissimo and do the following:
+```bash
+# Go into the pulpissimo root folder
+cd pulpissimo
+git submodule update --init --recursive
+```
 Set the following environment variable to point to the folder where the pulpissimo was cloned:
 ```bash
 # Change <pulpissimo root folder> to the absolute path of pulpissimo
